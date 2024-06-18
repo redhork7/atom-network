@@ -14,6 +14,8 @@ WORKDIR /app
 
 ENV NODE_ENV production
 
+RUN ln -snf /usr/share/zoneinfo/Asia/Seoul /etc/localtime && echo "Asia/Seoul" > /etc/timezone
+
 RUN addgroup --gid 1001 --system nodejs
 RUN adduser --system nestjs -u 1001
 
