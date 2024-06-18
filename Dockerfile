@@ -1,5 +1,3 @@
-MAINTAINER redhork7 <redhork7@redhork7.com>
-
 FROM node:20 AS builder
 
 WORKDIR /app
