@@ -7,30 +7,30 @@ PORT=$(cat Dockerfile | grep EXPOSE | head -1 | cut -d ' ' -f 2)
 IMAGE=$APP_NAME':'$BUILD_VERSION
 CONTAINER=$APP_NAME'-'$BUILD_VERSION'-container'
 
-if [ "$COMMAND" -eq "build" ]; then
+if [ "$COMMAND" = "build" ]; then
     docker build -t $IMAGE .
 fi
 
-if [ "$COMMAND" -eq "run" ]; then
+if [ "$COMMAND" = "run" ]; then
     docker rm -f $CONTAINER
     docker run --name $CONTAINER -p $PORT:$PORT -d $IMAGE
 fi
 
-if [ "$COMMAND" -eq "exec" ]; then
+if [ "$COMMAND" = "exec" ]; then
     docker rm -f $CONTAINER
     docker exec -it $(docker run --name $CONTAINER -p $PORT:$PORT -d $IMAGE) /bin/sh
 fi
 
-if [ "$COMMAND" -eq "rm" ]; then
+if [ "$COMMAND" = "rm" ]; then
     docker rm -f $CONTAINER
 fi
 
-if [ "$COMMAND" -eq "rmi" ]; then
+if [ "$COMMAND" = "rmi" ]; then
     docker rm -f $CONTAINER
     docker rmi -f $IMAGE
 fi
 
-if [ "$COMMAND" -eq "rebuild" ]; then
+if [ "$COMMAND" = "rebuild" ]; then
     docker rm -f $CONTAINER
     docker rmi -f $IMAGE
     docker build -t $IMAGE .
