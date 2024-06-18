@@ -1,26 +1,18 @@
-import { Public } from '@app/auth/guards/jwt-auth.guard';
-import { Success, Failure, AuthResponse } from '@app/types';
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiTags, ApiBody, ApiResponse } from '@nestjs/swagger';
-import { SignUpWithAccountDto } from '../sign.dto';
+import { Controller } from '@nestjs/common';
+import { ISignUpWithAccountDto } from '../sign.dto';
 import { SignUpService } from './sign-up.service';
+import { MessagePattern } from '@nestjs/microservices';
+import { CmdSignUpWithAccount } from '../sign.cmd';
+import { UidResult } from '@app/types';
 
-@ApiTags('sign')
-@Controller('sign-up')
+@Controller()
 export class SignUpController {
   constructor(private readonly signUpService: SignUpService) {}
 
-  @Public()
-  @ApiBody({ type: SignUpWithAccountDto })
-  @ApiResponse({ status: Success, description: '가입 성공' })
-  @ApiResponse({
-    status: Failure,
-    description: '가입 실패 (사유는 알려주지 않음)',
-  })
-  @Post('with-account')
-  async withAccount(@Body() dto: SignUpWithAccountDto): Promise<AuthResponse> {
-    const token = await this.signUpService.withAccount(dto);
+  @MessagePattern({ cmd: CmdSignUpWithAccount })
+  async withAccount(dto: ISignUpWithAccountDto): Promise<UidResult> {
+    const uid = await this.signUpService.withAccount(dto);
 
-    return { code: Success, result: token };
+    return { result: true, data: uid };
   }
 }

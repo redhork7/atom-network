@@ -1,10 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SignUpController } from './sign-up.controller';
 import { SignUpService } from './sign-up.service';
-import { MockAuthModule } from '@app/auth/test-utils/mock-auth.module';
 import { DatabaseModule } from '@app/database';
 import { MockDatabaseModule } from '@app/database/test-utils/mock-database.module';
-import { Success } from '@app/types';
 import { AccountsModule } from '../../accounts/accounts.module';
 
 describe('SignUpController', () => {
@@ -13,7 +11,7 @@ describe('SignUpController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [MockAuthModule, AccountsModule],
+      imports: [AccountsModule],
       providers: [SignUpService],
       controllers: [SignUpController],
     })
@@ -30,18 +28,14 @@ describe('SignUpController', () => {
   });
 
   it('with account', async () => {
-    jest.spyOn(signUpService, 'withAccount').mockResolvedValue({
-      accessToken: 'token',
-      refreshToken: 'token',
-      magicToken: 'token',
-    });
+    jest.spyOn(signUpService, 'withAccount').mockResolvedValue(1);
     expect(
       (
         await controller.withAccount({
           id: 'non-exists',
           password: 'non-exists',
         })
-      ).code,
-    ).toBe(Success);
+      ).data,
+    ).toBe(1);
   });
 });

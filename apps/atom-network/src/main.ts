@@ -1,22 +1,24 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const appConfig = app.get<ConfigService>(ConfigService);
+  const appPort = appConfig.get<number>('APP_PORT_ATOM_NETWORK');
+  const msa = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.TCP,
+      options: {
+        host: '0.0.0.0',
+        port: appPort,
+      },
+    },
+  );
 
-  // swagger
-  if (process.env.NODE_ENV === 'development') {
-    const config = new DocumentBuilder()
-      .setTitle('atom-network')
-      .setDescription('atom')
-      .setVersion('0.1')
-      .addBearerAuth()
-      .build();
-    const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('swagger', app, document);
-  }
-
-  await app.listen(3000);
+  await msa.listen();
+  await app.listen(+appPort + 1);
 }
 bootstrap();

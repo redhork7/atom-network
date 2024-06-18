@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { resolve } from 'path';
 import { validate as validateDatabaseEnv } from '@app/database/env.validate';
-import { validate as validateAuthEnv } from '@app/auth/env.validate';
 import { AccountsModule } from './accounts/accounts.module';
 import { DevicesModule } from './devices/devices.module';
 import { SignModule } from './sign/sign.module';
@@ -13,9 +12,12 @@ import { SignModule } from './sign/sign.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: resolve(__dirname, '../../../../../../.env.atom-network'),
+      envFilePath: [
+        resolve(__dirname, '../../../../../../.env.atom-network'),
+        resolve(__dirname, '../../../../../../.env.gateway'),
+      ],
       validate: (config) => {
-        return validateDatabaseEnv(config) && validateAuthEnv(config);
+        return validateDatabaseEnv(config);
       },
     }),
     DevicesModule,

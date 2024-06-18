@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SignUpService } from './sign-up.service';
-import { MockAuthModule } from '@app/auth/test-utils/mock-auth.module';
 import { DatabaseModule } from '@app/database';
 import { MockDatabaseModule } from '@app/database/test-utils/mock-database.module';
 import { AccountsModule } from '../../accounts/accounts.module';
@@ -12,7 +11,7 @@ describe('SignUpService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [MockAuthModule, AccountsModule],
+      imports: [AccountsModule],
       providers: [SignUpService],
     })
       .overrideModule(DatabaseModule)
@@ -34,6 +33,6 @@ describe('SignUpService', () => {
     };
 
     jest.spyOn(accountsService, 'register').mockResolvedValue(1);
-    expect(await service.withAccount(dto)).toHaveProperty('accessToken');
+    expect(await service.withAccount(dto)).toBe(1);
   });
 });

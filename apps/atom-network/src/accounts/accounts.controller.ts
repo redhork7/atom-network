@@ -1,42 +1,21 @@
-import { Controller, Post, Request, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Controller } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 import { AccountsService } from './accounts.service';
-import { JwtAuthGuard } from '@app/auth/guards/jwt-auth.guard';
-import { Failure, Success, EmptyResponse } from '@app/types';
-import { AccountsChangePasswordDto } from './accounts.dto';
+import { EmptyResult } from '@app/types';
+import { IAccountsChangePasswordDto } from './accounts.dto';
+import { CmdAccountsChangePassword, CmdAccountsExpire } from './accounts.cmd';
 
-@ApiTags('accounts')
-@Controller('accounts')
+@Controller()
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
 
-  @ApiBearerAuth()
-  @ApiBody({ type: AccountsChangePasswordDto })
-  @ApiResponse({ status: Success, description: '비밀번호 변경 완료' })
-  @ApiResponse({ status: Failure, description: '비밀번호 변경 실패' })
-  @UseGuards(JwtAuthGuard)
-  @Post('change/password')
-  async changePassword(@Request() req): Promise<EmptyResponse> {
-    const { uid } = req.user;
-    const dto = req.body as AccountsChangePasswordDto;
-
-    return {
-      code: (await this.accountsService.changePassword(uid, dto))
-        ? Success
-        : Failure,
-    };
+  @MessagePattern({ cmd: CmdAccountsChangePassword })
+  async changePassword(dto: IAccountsChangePasswordDto): Promise<EmptyResult> {
+    return { result: !!(await this.accountsService.changePassword(dto)) };
   }
 
-  @ApiBearerAuth()
-  @ApiResponse({ status: Success, description: '계정 탈퇴 완료' })
-  @ApiResponse({ status: Failure, description: '계정 탈퇴 실패' })
-  @UseGuards(JwtAuthGuard)
-  @Post('expire')
-  async expire(@Request() req): Promise<EmptyResponse> {
-    const { uid } = req.user;
-
-    return {
-      code: (await this.accountsService.expire(uid)) ? Success : Failure,
-    };
+  @MessagePattern({ cmd: CmdAccountsExpire })
+  async expire(uid: number): Promise<EmptyResult> {
+    return { result: !!(await this.accountsService.expire(uid)) };
   }
 }

@@ -3,7 +3,6 @@ import { AccountsController } from './accounts.controller';
 import { AccountsService } from './accounts.service';
 import { MockDatabaseModule } from '@app/database/test-utils/mock-database.module';
 import { AccountsRepository } from './accounts.repository';
-import { Success } from '@app/types';
 
 describe('AccountsController', () => {
   let controller: AccountsController;
@@ -26,13 +25,19 @@ describe('AccountsController', () => {
 
   it('change password', async () => {
     jest.spyOn(accountsService, 'changePassword').mockResolvedValue(true);
-    expect((await controller.changePassword({ user: { uid: 1 } })).code).toBe(
-      Success,
-    );
+    expect(
+      (
+        await controller.changePassword({
+          uid: 1,
+          currentPassword: 'test-current-password',
+          newPassword: 'test-new-password',
+        })
+      ).result,
+    ).toBeTruthy();
   });
 
   it('expire', async () => {
     jest.spyOn(accountsService, 'expire').mockResolvedValue(true);
-    expect((await controller.expire({ user: { uid: 1 } })).code).toBe(Success);
+    expect((await controller.expire(1)).result).toBeTruthy();
   });
 });

@@ -13,12 +13,8 @@ export type EmptyResponse = Response<undefined>;
 
 export type SimpleErrorResponse = Response<unknown>;
 
-export type SimpleRegisterResult = {
-  uid: number;
-};
-
 export type SimpleRegisterResponse =
-  | Response<SimpleRegisterResult>
+  | Response<{ uid: number }>
   | SimpleErrorResponse;
 
 export type AuthResponse = Response<JwtToken> | SimpleErrorResponse;

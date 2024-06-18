@@ -1,11 +1,8 @@
-import { JwtToken } from '@app/auth';
 import {
-  AccountsFindUidByDto,
-  AccountsRegisterDto,
+  IAccountsFindUidByDto,
+  IAccountsRegisterDto,
 } from '../accounts/accounts.dto';
 
-export class SignInWithAccountDto extends AccountsFindUidByDto {}
+export interface ISignInWithAccountDto extends IAccountsFindUidByDto {}
 
-export class SignUpWithAccountDto extends AccountsRegisterDto {}
-
-export class SignRefreshTokenDto extends JwtToken {}
+export interface ISignUpWithAccountDto extends IAccountsRegisterDto {}

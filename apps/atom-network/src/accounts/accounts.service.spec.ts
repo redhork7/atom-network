@@ -31,6 +31,7 @@ describe('AccountsService', () => {
 
   it('register, change password, expire', async () => {
     const dto = {
+      uid: 1,
       id: 'testId1009',
       password: 'testpwd#1009',
     };
@@ -39,10 +40,11 @@ describe('AccountsService', () => {
     saveSpy<Account>(accountsRepository, { uid: 1 });
     expect(await service.register(dto)).toBe(1);
 
-    findOneBySpy<Account>(accountsRepository, { uid: 1, ...dto });
+    findOneBySpy<Account>(accountsRepository, dto);
     updateSpy(accountsRepository, 1);
     expect(
-      await service.changePassword(1, {
+      await service.changePassword({
+        uid: 1,
         currentPassword: dto.password,
         newPassword: `${dto.password}9001`,
       }),

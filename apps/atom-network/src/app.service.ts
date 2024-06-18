@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { format } from 'date-fns';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  ping(): string {
+    return format(new Date(), 'yyyyMMdd');
   }
 }

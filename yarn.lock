@@ -1025,6 +1025,49 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nestjs/microservices@npm:^10.3.9":
+  version: 10.3.9
+  resolution: "@nestjs/microservices@npm:10.3.9"
+  dependencies:
+    iterare: 1.2.1
+    tslib: 2.6.2
+  peerDependencies:
+    "@grpc/grpc-js": "*"
+    "@nestjs/common": ^10.0.0
+    "@nestjs/core": ^10.0.0
+    "@nestjs/websockets": ^10.0.0
+    amqp-connection-manager: "*"
+    amqplib: "*"
+    cache-manager: "*"
+    ioredis: "*"
+    kafkajs: "*"
+    mqtt: "*"
+    nats: "*"
+    reflect-metadata: ^0.1.12 || ^0.2.0
+    rxjs: ^7.1.0
+  peerDependenciesMeta:
+    "@grpc/grpc-js":
+      optional: true
+    "@nestjs/websockets":
+      optional: true
+    amqp-connection-manager:
+      optional: true
+    amqplib:
+      optional: true
+    cache-manager:
+      optional: true
+    ioredis:
+      optional: true
+    kafkajs:
+      optional: true
+    mqtt:
+      optional: true
+    nats:
+      optional: true
+  checksum: 8819407c9a1f38f59b672cc9d11043204dd4a8a3ba2d1cff55bc517d25246a2b9f8b4ed86fc0a729a9ef5aa26645f88c6cde8fddcc8dfd5d8d614f5db2cb10bb
+  languageName: node
+  linkType: hard
+
 "@nestjs/passport@npm:^10.0.3":
   version: 10.0.3
   resolution: "@nestjs/passport@npm:10.0.3"
@@ -2198,6 +2241,7 @@ __metadata:
     "@nestjs/config": ^3.2.2
     "@nestjs/core": ^10.0.0
     "@nestjs/jwt": ^10.2.0
+    "@nestjs/microservices": ^10.3.9
     "@nestjs/passport": ^10.0.3
     "@nestjs/platform-express": ^10.0.0
     "@nestjs/schematics": ^10.0.0
@@ -2215,6 +2259,7 @@ __metadata:
     class-transformer: ^0.5.1
     class-validator: ^0.14.1
     cross-env: ^7.0.3
+    date-fns: ^3.6.0
     env-cmd: ^10.1.0
     eslint: ^8.42.0
     eslint-config-prettier: ^9.0.0
@@ -2976,6 +3021,13 @@ __metadata:
     shebang-command: ^2.0.0
     which: ^2.0.1
   checksum: 671cc7c7288c3a8406f3c69a3ae2fc85555c04169e9d611def9a675635472614f1c0ed0ef80955d5b6d4e724f6ced67f0ad1bb006c2ea643488fcfef994d7f52
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "date-fns@npm:3.6.0"
+  checksum: 0daa1e9a436cf99f9f2ae9232b55e11f3dd46132bee10987164f3eebd29f245b2e066d7d7db40782627411ecf18551d8f4c9fcdf2226e48bb66545407d448ab7
   languageName: node
   linkType: hard
 

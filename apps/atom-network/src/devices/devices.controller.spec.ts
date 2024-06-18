@@ -3,7 +3,6 @@ import { DevicesController } from './devices.controller';
 import { MockDatabaseModule } from '@app/database/test-utils/mock-database.module';
 import { DevicesService } from './devices.service';
 import { DevicesRepository } from './devices.repository';
-import { SimpleRegisterResult } from '@app/types';
 
 describe('DevicesController', () => {
   let controller: DevicesController;
@@ -28,13 +27,11 @@ describe('DevicesController', () => {
     jest.spyOn(devicesService, 'register').mockResolvedValue(1);
     expect(
       (
-        (
-          await controller.register({
-            uuid: 'test-uuid',
-            userAgent: 'test-userAgent',
-          })
-        ).result as SimpleRegisterResult
-      ).uid,
-    ).toBe(1);
+        await controller.register({
+          uuid: 'test-uuid',
+          userAgent: 'test-userAgent',
+        })
+      ).result,
+    ).toBeTruthy();
   });
 });

@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { AccountsRepository } from './accounts.repository';
 import { createHash } from 'crypto';
 import {
-  AccountsChangePasswordDto,
-  AccountsFindUidByDto,
-  AccountsRegisterDto,
+  IAccountsChangePasswordDto,
+  IAccountsFindUidByDto,
+  IAccountsRegisterDto,
 } from './accounts.dto';
 import { ValidationError } from 'class-validator';
 import { IsNull } from 'typeorm';
@@ -29,7 +29,7 @@ export class AccountsService {
     }
   }
 
-  async findUidBy(dto: AccountsFindUidByDto): Promise<number> {
+  async findUidBy(dto: IAccountsFindUidByDto): Promise<number> {
     const { uid } = await this.accountsRepository.findOneByOrFail({
       ...dto,
       password: this.validatePassword(dto.password),
@@ -43,7 +43,7 @@ export class AccountsService {
     return !(await this.accountsRepository.findOneByOrFail({ uid })).expiredAt;
   }
 
-  async register(dto: AccountsRegisterDto): Promise<number> {
+  async register(dto: IAccountsRegisterDto): Promise<number> {
     const { password, ...account } = {
       ...dto,
       id: this.validateId(dto.id),
@@ -57,18 +57,15 @@ export class AccountsService {
     return uid;
   }
 
-  async changePassword(
-    uid: number,
-    dto: AccountsChangePasswordDto,
-  ): Promise<boolean> {
+  async changePassword(dto: IAccountsChangePasswordDto): Promise<boolean> {
     const account = await this.accountsRepository.findOneBy({
-      uid,
+      uid: dto.uid,
       password: this.validatePassword(dto.currentPassword),
     });
 
     if (account) {
       const result = await this.accountsRepository.update(
-        { uid },
+        { uid: dto.uid },
         { password: this.validatePassword(dto.newPassword) },
       );
 

@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ChefrigoController } from './chefrigo.controller';
 import { ChefrigoService } from './chefrigo.service';
+import { format } from 'date-fns';
 
 describe('ChefrigoController', () => {
   let chefrigoController: ChefrigoController;
@@ -14,9 +15,9 @@ describe('ChefrigoController', () => {
     chefrigoController = app.get<ChefrigoController>(ChefrigoController);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(chefrigoController.getHello()).toBe('Hello World!');
+  describe('check alive', () => {
+    it('shoud return the current timestamp', () => {
+      expect(chefrigoController.ping()).toBe(format(new Date(), 'yyyyMMdd'));
     });
   });
 });
