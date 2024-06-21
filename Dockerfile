@@ -19,10 +19,10 @@ RUN ln -snf /usr/share/zoneinfo/Asia/Seoul /etc/localtime && echo "Asia/Seoul" >
 RUN addgroup --gid 1001 --system nodejs
 RUN adduser --system nestjs -u 1001
 
-COPY --from=builder --chown=nestjs:nodejs /app/dist/ ./dist
-COPY --from=builder --chown=nestjs:nodejs /app/.yarn ./.yarn
+COPY --from=builder --chown=nestjs:nodejs /app/dist/ ./dist/
+COPY --from=builder --chown=nestjs:nodejs /app/.yarn/ ./.yarn/
 COPY --from=builder --chown=nestjs:nodejs /app/.yarnrc.yml .
-COPY --from=builder --chown=nestjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nestjs:nodejs /app/node_modules/ ./node_modules/
 COPY --from=builder /app/.env.* .
 COPY --from=builder /app/package.json .
 COPY --from=builder /app/package-lock.json* .
