@@ -23,10 +23,10 @@ COPY --from=builder --chown=nestjs:nodejs /app/dist/ ./dist/
 COPY --from=builder --chown=nestjs:nodejs /app/.yarn/ ./.yarn/
 COPY --from=builder --chown=nestjs:nodejs /app/.yarnrc.yml .
 COPY --from=builder --chown=nestjs:nodejs /app/node_modules/ ./node_modules/
-COPY --from=builder /app/.env.* .
+COPY --from=builder /app/.env.* ./
 COPY --from=builder /app/package.json .
-COPY --from=builder /app/package-lock.json* .
-COPY --from=builder /app/yarn.lock* .
+COPY --from=builder /app/package-lock.json* ./
+COPY --from=builder /app/yarn.lock* ./
 COPY --from=builder /app/ecosystem.config.js .
 
 RUN npm install -g pm2@5.4.0
