@@ -34,4 +34,25 @@ describe('DevicesController', () => {
       ).result,
     ).toBeTruthy();
   });
+
+  it('set owner and free', async () => {
+    jest.spyOn(devicesService, 'setOwner').mockResolvedValue(true);
+    expect(
+      (
+        await controller.setOwner({
+          uid: 1,
+          accountUid: 1,
+        })
+      ).result,
+    ).toBeTruthy();
+
+    jest.spyOn(devicesService, 'setFree').mockResolvedValue(true);
+    expect(
+      (
+        await controller.setFree({
+          uid: 1,
+        })
+      ).result,
+    ).toBeTruthy();
+  });
 });

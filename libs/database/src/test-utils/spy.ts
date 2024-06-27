@@ -23,3 +23,18 @@ export const softRemoveSpy = <T>(repository: Repository<T>, mock?: any) => {
     .spyOn(repository, 'softRemove')
     .mockResolvedValue((mock ? [mock] : []) as any);
 };
+
+export const createQueryBuilderSpy = <T>(
+  repository: Repository<T>,
+  mock?: any,
+) => {
+  const mockCreateQueryBuilder: any = {
+    update: jest.fn().mockReturnThis(),
+    where: jest.fn().mockReturnThis(),
+    execute: jest.fn().mockResolvedValue({ affected: mock }),
+  };
+
+  return jest
+    .spyOn(repository, 'createQueryBuilder')
+    .mockImplementation(() => mockCreateQueryBuilder);
+};

@@ -1,9 +1,17 @@
 import { Controller } from '@nestjs/common';
 import { DevicesService } from './devices.service';
-import { UidResult } from '@app/types';
-import { IDevicesRegisterDto } from './devices.dto';
+import { EmptyResult, UidResult } from '@app/types';
 import { MessagePattern } from '@nestjs/microservices';
-import { CmdDevicesRegister } from './devices.cmd';
+import {
+  CmdDevicesRegister,
+  CmdDevicesSetFree,
+  CmdDevicesSetOwner,
+} from './devices.cmd';
+import {
+  IDevicesSetFreeDto,
+  IDevicesSetOwnerDto,
+  IDevicesRegisterDto,
+} from './devices.dto';
 
 @Controller()
 export class DevicesController {
@@ -16,6 +24,20 @@ export class DevicesController {
     return {
       result: !!uid,
       ...(uid ? { data: uid } : {}),
+    };
+  }
+
+  @MessagePattern({ cmd: CmdDevicesSetOwner })
+  async setOwner(dto: IDevicesSetOwnerDto): Promise<EmptyResult> {
+    return {
+      result: !!(await this.devicesService.setOwner(dto)),
+    };
+  }
+
+  @MessagePattern({ cmd: CmdDevicesSetFree })
+  async setFree(dto: IDevicesSetFreeDto): Promise<EmptyResult> {
+    return {
+      result: !!(await this.devicesService.setFree(dto)),
     };
   }
 }

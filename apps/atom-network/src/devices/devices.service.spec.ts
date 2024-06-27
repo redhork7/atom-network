@@ -2,7 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DevicesService } from './devices.service';
 import { DevicesRepository } from './devices.repository';
 import { MockDatabaseModule } from '@app/database/test-utils/mock-database.module';
-import { findOneBySpy, saveSpy } from '@app/database/test-utils/spy';
+import {
+  createQueryBuilderSpy,
+  findOneBySpy,
+  saveSpy,
+} from '@app/database/test-utils/spy';
 import { Device } from '../entities/device.entity';
 
 describe('DevicesService', () => {
@@ -32,5 +36,11 @@ describe('DevicesService', () => {
         userAgent: 'test-userAgent',
       }),
     ).toBe(1);
+  });
+
+  it('set owner and free', async () => {
+    createQueryBuilderSpy<any>(devicesRepository, 1);
+    expect(await service.setOwner({ uid: 1, accountUid: 1 })).toBeTruthy();
+    expect(await service.setFree({ uid: 1 })).toBeTruthy();
   });
 });

@@ -17,7 +17,7 @@ const DatabaseProvider: Provider = {
       database: config.get<string>('DB_NAME'),
       entities: [resolve(__dirname, '../../../../**/*.entity.{ts,js}')],
       synchronize: false,
-      logging: true,
+      logging: !!(process.env.NODE_ENV === 'development'),
       namingStrategy: new SnakeNamingStrategy(),
     });
 

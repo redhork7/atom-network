@@ -1,13 +1,21 @@
 import { Controller, Inject, Post, Request, UseGuards } from '@nestjs/common';
 import { ClientProxyAtomNetwork } from '../../constants/atom-network';
 import { AuthService, JwtTokenPayload } from '@app/auth';
-import { AuthResponse, EmptyResult, Failure, Success } from '@app/types';
+import {
+  AuthResponse,
+  EmptyResponse,
+  EmptyResult,
+  Failure,
+  Success,
+} from '@app/types';
 import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SignRefreshTokenDto } from './sign.dto';
+import { SignOutDto, SignRefreshTokenDto } from './sign.dto';
 import { JwtAuthGuard } from '@app/auth/guards/jwt-auth.guard';
 import { CmdSignVerify } from 'apps/atom-network/src/sign/sign.cmd';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import { CmdDevicesSetFree } from 'apps/atom-network/src/devices/devices.cmd';
+import { IDevicesSetFreeDto } from 'apps/atom-network/src/devices/devices.dto';
 
 @ApiTags('sign')
 @Controller('sign')
@@ -42,5 +50,26 @@ export class SignController {
     }
 
     return { code: Failure };
+  }
+
+  @ApiBearerAuth()
+  @ApiBody({ type: SignOutDto })
+  @ApiResponse({ status: Success, description: '로그아웃' })
+  @ApiResponse({ status: Failure, description: '재시도 필요' })
+  @UseGuards(JwtAuthGuard)
+  @Post('out')
+  async changePassword(@Request() req): Promise<EmptyResponse> {
+    const dto: SignOutDto = req.body;
+
+    // device 해제
+    const response: EmptyResult = await firstValueFrom(
+      this.atomNetworkProxy.send({ cmd: CmdDevicesSetFree }, {
+        uid: dto.deviceUid,
+      } as IDevicesSetFreeDto),
+    );
+
+    return {
+      code: response.result ? Success : Failure,
+    };
   }
 }
