@@ -10,6 +10,7 @@ import {
 } from 'apps/atom-network/src/accounts/accounts.cmd';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import { validateDto } from '../../utils/dto-validator';
 
 @ApiTags('accounts')
 @Controller('accounts')
@@ -27,7 +28,7 @@ export class AccountsController {
   @Post('change/password')
   async changePassword(@Request() req): Promise<EmptyResponse> {
     const { uid } = req.user;
-    const dto = req.body as AccountsChangePasswordDto;
+    const dto = validateDto(AccountsChangePasswordDto, req.body);
     const response: EmptyResult = await firstValueFrom(
       this.atomNetworkProxy.send(
         { cmd: CmdAccountsChangePassword },

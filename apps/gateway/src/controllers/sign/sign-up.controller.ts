@@ -8,6 +8,7 @@ import { CmdSignUpWithAccount } from 'apps/atom-network/src/sign/sign.cmd';
 import { AuthResponse, Failure, Success, UidResult } from '@app/types';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import { validateDto } from '../../utils/dto-validator';
 
 @ApiTags('sign')
 @Controller('sign-up')
@@ -28,7 +29,10 @@ export class SignUpController {
   @Post('with-account')
   async withAccount(@Body() dto: SignUpWithAccountDto): Promise<AuthResponse> {
     const { data: uid }: UidResult = await firstValueFrom(
-      this.atomNetworkProxy.send({ cmd: CmdSignUpWithAccount }, dto),
+      this.atomNetworkProxy.send(
+        { cmd: CmdSignUpWithAccount },
+        validateDto(SignUpWithAccountDto, dto),
+      ),
     );
     const jwtToken = await this.authService.issueToken({ uid });
 

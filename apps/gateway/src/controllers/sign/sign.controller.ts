@@ -15,7 +15,7 @@ import { CmdSignVerify } from 'apps/atom-network/src/sign/sign.cmd';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { CmdDevicesSetFree } from 'apps/atom-network/src/devices/devices.cmd';
-import { IDevicesSetFreeDto } from 'apps/atom-network/src/devices/devices.dto';
+import { validateDto } from '../../utils/dto-validator';
 
 @ApiTags('sign')
 @Controller('sign')
@@ -37,7 +37,7 @@ export class SignController {
   @Post('refresh-token')
   async refreshToken(@Request() req): Promise<AuthResponse> {
     const payload = req.user as JwtTokenPayload;
-    const jwtToken = req.body as SignRefreshTokenDto;
+    const jwtToken = validateDto(SignRefreshTokenDto, req.body);
     const response: EmptyResult = await firstValueFrom(
       this.atomNetworkProxy.send({ cmd: CmdSignVerify }, payload.uid),
     );
@@ -59,13 +59,16 @@ export class SignController {
   @UseGuards(JwtAuthGuard)
   @Post('out')
   async changePassword(@Request() req): Promise<EmptyResponse> {
-    const dto: SignOutDto = req.body;
+    const dto = validateDto(SignOutDto, req.body);
 
     // device 해제
     const response: EmptyResult = await firstValueFrom(
-      this.atomNetworkProxy.send({ cmd: CmdDevicesSetFree }, {
-        uid: dto.deviceUid,
-      } as IDevicesSetFreeDto),
+      this.atomNetworkProxy.send(
+        { cmd: CmdDevicesSetFree },
+        {
+          uid: dto.deviceUid,
+        },
+      ),
     );
 
     return {

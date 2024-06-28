@@ -24,6 +24,7 @@ import {
 } from 'apps/atom-network/src/devices/devices.cmd';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import { validateDto } from '../../utils/dto-validator';
 
 @ApiTags('devices')
 @Controller('devices')
@@ -41,7 +42,10 @@ export class DevicesController {
     @Body() dto: DevicesRegisterDto,
   ): Promise<SimpleRegisterResponse> {
     const response: UidResult = await firstValueFrom(
-      this.atomNetworkProxy.send({ cmd: CmdDevicesRegister }, dto),
+      this.atomNetworkProxy.send(
+        { cmd: CmdDevicesRegister },
+        validateDto(DevicesRegisterDto, dto),
+      ),
     );
 
     return response.result
@@ -57,7 +61,7 @@ export class DevicesController {
   @Post('set-owner')
   async changePassword(@Request() req): Promise<EmptyResponse> {
     const { uid: accountUid } = req.user;
-    const dto = req.body;
+    const dto = validateDto(DevicesSetOwnerDto, req.body);
     const response: EmptyResult = await firstValueFrom(
       this.atomNetworkProxy.send(
         { cmd: CmdDevicesSetOwner },

@@ -3,16 +3,26 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
+import { IsString } from 'class-validator';
 import { createCipheriv, createDecipheriv, createHash } from 'crypto';
 
 export class JwtTokenPayload {
-  @Expose() uid: number;
+  @Expose() @IsString() uid: number;
 }
 
 export class JwtToken {
-  @ApiProperty({ description: '인증토큰' }) @Expose() accessToken: string;
-  @ApiProperty({ description: '갱신토큰' }) @Expose() refreshToken: string;
-  @ApiProperty({ description: '검증토큰' }) @Expose() magicToken: string;
+  @ApiProperty({ description: '인증토큰' })
+  @Expose()
+  @IsString()
+  accessToken: string;
+  @ApiProperty({ description: '갱신토큰' })
+  @Expose()
+  @IsString()
+  refreshToken: string;
+  @ApiProperty({ description: '검증토큰' })
+  @Expose()
+  @IsString()
+  magicToken: string;
 }
 
 @Injectable()
