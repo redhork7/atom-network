@@ -1,23 +1,31 @@
 import { JwtToken } from '@app/auth';
-import {
-  ISignInWithAccountDto,
-  ISignUpWithAccountDto,
-} from 'apps/atom-network/src/sign/sign.dto';
-import {
-  AccountsFindUidByDto,
-  AccountsRegisterDto,
-} from '../accounts/accounts.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { IsNumber } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
-export class SignInWithAccountDto
-  extends AccountsFindUidByDto
-  implements ISignInWithAccountDto {}
+export class SignUpWithAccountDto {
+  @ApiProperty({ required: false, description: '계정 아이디 (로그인)' })
+  @Expose()
+  @IsString()
+  id: string;
 
-export class SignUpWithAccountDto
-  extends AccountsRegisterDto
-  implements ISignUpWithAccountDto {}
+  @ApiProperty({ required: false, description: '계정 비밀번호 (로그인)' })
+  @Expose()
+  @IsString()
+  password: string;
+}
+
+export class SignInWithAccountDto {
+  @ApiProperty({ description: '계정 아이디 (로그인)' })
+  @Expose()
+  @IsString()
+  id: string;
+
+  @ApiProperty({ description: '계정 비밀번호 (로그인)' })
+  @Expose()
+  @IsString()
+  password: string;
+}
 
 export class SignRefreshTokenDto extends JwtToken {}
 

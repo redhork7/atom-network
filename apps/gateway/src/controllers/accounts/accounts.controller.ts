@@ -48,9 +48,9 @@ export class AccountsController {
   @Post('expire')
   async expire(@Request() req): Promise<EmptyResponse> {
     const { uid } = req.user;
-    const response: EmptyResult = await this.atomNetworkProxy
-      .send({ cmd: CmdAccountsExpire }, uid)
-      .toPromise();
+    const response: EmptyResult = await firstValueFrom(
+      this.atomNetworkProxy.send({ cmd: CmdAccountsExpire }, uid),
+    );
 
     return {
       code: response.result ? Success : Failure,
