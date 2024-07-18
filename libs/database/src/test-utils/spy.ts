@@ -28,6 +28,18 @@ export const softRemoveSpy = <T>(repository: Repository<T>, mock?: any) => {
     .mockResolvedValue((mock ? [mock] : []) as any);
 };
 
+export const softDeleteSpy = <T>(repository: Repository<T>, mock?: any) => {
+  return jest
+    .spyOn(repository, 'softDelete')
+    .mockResolvedValue({ affected: mock || 1 } as any);
+};
+
+export const restoreSpy = <T>(repository: Repository<T>, mock?: any) => {
+  return jest
+    .spyOn(repository, 'restore')
+    .mockResolvedValue({ affected: mock || 1 } as any);
+};
+
 export const deleteSpy = <T>(repository: Repository<T>, mock?: number) => {
   return jest
     .spyOn(repository, 'delete')
