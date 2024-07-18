@@ -18,8 +18,8 @@ export class UsersService {
   private async checkMaxUsersForAccount(accountUid: number): Promise<boolean> {
     const numberOfUsers = (await this.getUsers(accountUid)).length;
 
-    if (numberOfUsers >= 5) {
-      throw new Error('최대 5명까지 등록할 수 있습니다.');
+    if (numberOfUsers >= 10) {
+      throw new Error('최대 10명까지 등록할 수 있습니다.');
     }
 
     return true;

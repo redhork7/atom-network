@@ -32,7 +32,7 @@ export class UsersController {
 
     if (user.accountUid) {
       other = (await this.usersService.getUsers(user.accountUid)).filter(
-        (user) => user.uid !== user.uid,
+        (each) => each.uid !== user.uid,
       );
     }
 
