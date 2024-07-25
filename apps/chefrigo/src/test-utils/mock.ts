@@ -2,6 +2,7 @@ import { padStart } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import { User } from '../entities/user.entity';
 import { Home } from '../entities/home.entity';
+import { Family } from '../entities/family.entity';
 
 export const mockUser: User = {
   uid: 1,
@@ -34,3 +35,31 @@ export const mockHome: Home = {
   foods: [],
   families: [],
 };
+
+export const mockAnotherHome: Home = {
+  uid: 2,
+  placeName: 'mock-another-home',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  hiddenAt: undefined,
+  foods: [],
+  families: [],
+};
+
+export const mockFamiles: Family[] = [
+  {
+    uid: 1,
+    user: mockUser,
+    home: mockHome,
+  },
+  {
+    uid: 2,
+    user: mockAnotherUser,
+    home: mockHome,
+  },
+  {
+    uid: 3,
+    user: mockAnotherUser,
+    home: mockAnotherHome,
+  },
+];

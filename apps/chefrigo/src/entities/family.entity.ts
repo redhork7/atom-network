@@ -21,9 +21,9 @@ export class Family {
   })
   name?: string;
 
-  @ManyToOne(() => User, (user) => user.families)
+  @ManyToOne(() => User, (user) => user.families, { eager: true })
   user: User;
 
-  @ManyToOne(() => Home, (home) => home.families)
+  @ManyToOne(() => Home, (home) => home.families, { eager: true })
   home: Home;
 }
