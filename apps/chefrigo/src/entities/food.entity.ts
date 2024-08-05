@@ -21,7 +21,7 @@ export class Food {
   })
   name: string;
 
-  @Column('text', { comment: '태그목록' })
+  @Column('simple-array', { comment: '태그목록' })
   tags: string[];
 
   @CreateDateColumn({ type: 'timestamp' })

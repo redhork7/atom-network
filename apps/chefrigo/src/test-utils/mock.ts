@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { User } from '../entities/user.entity';
 import { Home } from '../entities/home.entity';
 import { Family } from '../entities/family.entity';
+import { Food } from '../entities/food.entity';
 
 export const mockUser: User = {
   uid: 1,
@@ -59,6 +60,46 @@ export const mockFamiles: Family[] = [
   },
   {
     uid: 3,
+    user: mockAnotherUser,
+    home: mockAnotherHome,
+  },
+];
+
+export const mockFood: Food = {
+  uid: 1,
+  name: 'cheese cake',
+  tags: ['cake', 'bakery', 'bread', 'cheese', 'desert'],
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  user: mockUser,
+  home: mockHome,
+};
+
+export const mockFoods: Food[] = [
+  mockFood,
+  {
+    uid: 2,
+    name: 'icecream cake',
+    tags: ['cake', 'icecream', 'desert'],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    user: mockAnotherUser,
+    home: mockHome,
+  },
+  {
+    uid: 3,
+    name: 'salmon stake',
+    tags: ['meet', 'fish', 'lemon'],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    user: mockUser,
+  },
+  {
+    uid: 4,
+    name: 'bulgalbi',
+    tags: [],
+    createdAt: new Date(),
+    updatedAt: new Date(),
     user: mockAnotherUser,
     home: mockAnotherHome,
   },

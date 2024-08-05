@@ -1,5 +1,9 @@
 import { Repository } from 'typeorm';
 
+export const existsBySpy = <T>(repository: Repository<T>, mock: boolean) => {
+  return jest.spyOn(repository, 'existsBy').mockResolvedValue(mock);
+};
+
 export const findOneBySpy = <T>(repository: Repository<T>, mock: any) => {
   return jest.spyOn(repository, 'findOneBy').mockResolvedValue(mock as T);
 };
