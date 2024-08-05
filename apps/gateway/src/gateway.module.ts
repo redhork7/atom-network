@@ -9,6 +9,9 @@ import { DevicesController } from './controllers/devices/devices.controller';
 import { SignInController } from './controllers/sign/sign-in.controller';
 import { SignUpController } from './controllers/sign/sign-up.controller';
 import { SignController } from './controllers/sign/sign.controller';
+import { ChefrigoModule } from './controllers/chefrigo/chefrigo.module';
+import { RouterModule } from '@nestjs/core';
+import ChefrigoProvider from './proxy-providers/chefrigo';
 
 @Module({
   imports: [
@@ -20,8 +23,10 @@ import { SignController } from './controllers/sign/sign.controller';
       },
     }),
     AuthModule,
+    ChefrigoModule,
+    RouterModule.register([{ path: 'chefrigo', module: ChefrigoModule }]),
   ],
-  providers: [AtomNetworkProvider],
+  providers: [AtomNetworkProvider, ChefrigoProvider],
   controllers: [
     AccountsController,
     DevicesController,
